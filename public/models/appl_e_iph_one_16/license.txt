@@ -1,0 +1,11 @@
+Model Information:
+* title:	Appl E Iph One 16
+* source:	https://sketchfab.com/3d-models/appl-e-iph-one-16-5bd6a77c47594ea19e7f57e0ca56b7b3
+* author:	vmmaniac (https://sketchfab.com/vmmaniac)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Appl E Iph One 16" (https://sketchfab.com/3d-models/appl-e-iph-one-16-5bd6a77c47594ea19e7f57e0ca56b7b3) by vmmaniac (https://sketchfab.com/vmmaniac) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
