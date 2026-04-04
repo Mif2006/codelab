@@ -16,9 +16,9 @@ const Model = () => {
   return (
     <primitive 
       object={scene} 
-      scale={11} 
-      position={[0, -0.9, 0]} 
-      rotation={[0, -Math.PI / 4, 0]} 
+      scale={19} 
+      position={[0, -1.85, 0]} 
+      rotation={[0, -Math.PI / -4.2, 0]} 
     />
   );
 };
@@ -142,7 +142,7 @@ const AboutSection = ({ isActive }: { isActive: boolean }) => {
             </div>
           <div
             ref={imageRef}
-            className="relative z-10 w-72 h-84 sm:w-80 lg:w-86 lg:h-[77vh] overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] lg:shadow-2xl border border-white/5 lg:border-none bg-black/20 backdrop-blur-sm rounded-xl"
+            className="relative z-10 w-72 sm:h-[77vh] md:h-84 sm:w-80 lg:w-86 lg:h-[77vh] overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] lg:shadow-2xl border border-white/5 lg:border-none bg-black/20 backdrop-blur-sm rounded-xl"
           >
             <IPhoneViewer />
             
