@@ -121,7 +121,7 @@ const Index = () => {
       </div>
 
       {/* Счетчик секций (внизу слева) */}
-      <div className="fixed bottom-8 left-8 z-50 font-body text-xs tracking-[0.2em] text-muted-foreground mix-blend-difference">
+      <div className="hidden md:flex items-center fixed bottom-8 left-8 z-50 font-body text-xs tracking-[0.2em] text-muted-foreground mix-blend-difference">
         <span className="text-primary font-display text-2xl">{String(activeIndex + 1).padStart(2, "0")}</span>
         <span className="mx-2">/</span>
         <span>{String(SECTIONS).padStart(2, "0")}</span>

@@ -102,7 +102,7 @@ const HeroSection = ({ scrollProgress, onNavigate }: HeroSectionProps) => {
       </div>
 
       {/* Плавающие элементы по углам */}
-      <div className="absolute bottom-8 right-8 z-20 font-body text-[10px] md:text-xs tracking-[0.2em] uppercase text-muted-foreground animate-pulse-glow">
+      <div className="hidden md:flex absolute bottom-8 right-8 z-20 font-body text-[10px] md:text-xs tracking-[0.2em] uppercase text-muted-foreground animate-pulse-glow">
         Листайте вниз →
       </div>
     </section>
