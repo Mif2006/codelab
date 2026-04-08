@@ -77,7 +77,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     }
   }, [isActive]);
 
-  const title = "Свяжитесь с нами";
+  const title = "Свяжитесь с   нами";
 
   return (
     <section
@@ -115,19 +115,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
           начинается с простого разговора.
         </p>
 
-        <div className="flex flex-wrap gap-6 lg:gap-8 mt-10 lg:mt-12">
-          {["Telegram", "Behance", "Dribbble"].map((social, i) => (
-            <a
-              key={i}
-              href="#"
-              data-cursor-hover
-              className="font-body text-[10px] lg:text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-primary transition-colors duration-300 relative group"
-            >
-              {social}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-500" />
-            </a>
-          ))}
-        </div>
+     
       </div>
 
       {/* RIGHT SIDE: Functional Form (from Component 1) */}
