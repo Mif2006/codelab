@@ -160,8 +160,8 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
                   onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                   className="bg-transparent border-b border-border text-foreground py-3 focus:outline-none focus:border-primary transition-colors"
                 >
+                  <option className="bg-black text-white" value="+375">+375</option>
                   <option className="bg-black text-white" value="+7">+7</option>
-                  <option className="bg-black text-white" value="+380">+380</option>
                   <option className="bg-black text-white" value="+1">+1</option>
                   <option className="bg-black text-white" value="+44">+44</option>
                 </select>
