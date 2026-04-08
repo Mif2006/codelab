@@ -44,7 +44,7 @@ const workTypes = [
   { img: Project10, title: "Landing Page", category: "Лендинг", price: "от 199 BYN" },
   { img: Project11, title: "Интернет магазин", category: "Магазин", price: "от 899 BYN" },
   { img: Project12, title: "Corporate", category: "Корпоративный", price: "от 599 BYN" },
-  { img: Project28, title: "Custom Web", category: "Сложные проекты", price: "Индивидуально" },
+  { img: Project28, title: "Custom Web", category: "Индивидуальные проекты", price: "Индивидуально" },
 ];
 
 const projectsData: Project[] = [
@@ -74,7 +74,7 @@ const projectsData: Project[] = [
   },
   {
     title: "Custom Web",
-    category: "Сложные проекты",
+    category: "Индивидуальные проекты",
     video: "/mayak.mp4",
     gallery: [mayak1, mayak2, mayak3],
     description: "Мы предлагаем индивидуальные решения под любые задачи вашего бизнеса. Независимо от сложности проекта, наша команда разрабатывает персонализированные стратегии для достижения целей. Гибкий подход, учет всех требований и пожеланий заказчика гарантируют высокий результат. Каждый проект уникален, поэтому мы создаем продукты, которые идеально соответствуют вашим потребностям и помогают развиваться эффективнее.",
