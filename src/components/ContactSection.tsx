@@ -77,7 +77,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     }
   }, [isActive]);
 
-  const title = "Свяжитесь с     нами";
+  const title = "Свяжитесь с нами";
 
   return (
     <section
