@@ -13,6 +13,8 @@ import Project10 from "@/assets/17.png";
 import Project11 from "@/assets/18.png";
 import Project12 from "@/assets/19.png";
 import Project13 from "@/assets/20.png";
+import Project28 from "@/assets/28.png";
+
 import viva1 from '/viva/viva1.png'
 import viva2 from '/viva/viva2.png'
 import viva3 from '/viva/viva3.png'
@@ -24,6 +26,9 @@ import fitness1 from '/bigfitness/fit1.png'
 import fitness2 from '/bigfitness/fit2.png'
 import fitness3 from '/bigfitness/fit3.png'
 import fitness4 from '/bigfitness/fit4.png'
+import mayak1 from '/mayak/mayak1.png'
+import mayak2 from '/mayak/mayak2.png'
+import mayak3 from '/mayak/mayak3.png'
 import ProjectModal from "@/components/ProjectModal";
 
 export type Project = {
@@ -39,7 +44,7 @@ const workTypes = [
   { img: Project10, title: "Landing Page", category: "Лендинг", price: "от 199 BYN" },
   { img: Project11, title: "Интернет магазин", category: "Магазин", price: "от 899 BYN" },
   { img: Project12, title: "Corporate", category: "Корпоративный", price: "от 599 BYN" },
-  { img: Project13, title: "Custom Web", category: "Сложные проекты", price: "Индивидуально" },
+  { img: Project28, title: "Custom Web", category: "Сложные проекты", price: "Индивидуально" },
 ];
 
 const projectsData: Project[] = [
@@ -57,7 +62,7 @@ const projectsData: Project[] = [
     video: "/rumorvid.mp4",
     gallery: [rumor1, rumor2, rumor3, rumor4],
     description: "Проект представляет собой полноценную e-commerce экосистему. Ключевые преимущества — продуманная информационная архитектура, позволяющая пользователю мгновенно находить целевые товары через адаптивное меню и фильтры, и бесшовный процесс чекаута. Интеграция надежных платежных шлюзов обеспечивает безопасность транзакций и поддержку любых удобных для клиента методов оплаты.",
-    link: "#",
+    link: "https://www.rumor.by",
   },
   {
     title: "Corporate",
@@ -65,15 +70,15 @@ const projectsData: Project[] = [
     video: "/fitnessvid.mp4",
     gallery: [fitness1, fitness2, fitness3, fitness4],
     description: "Корпоративный сайт для представления бизнеса — это современное решение для укрепления имиджа компании. Мы создаем информативные ресурсы, которые рассказывают о ваших услугах, преимуществах и команде. Удобная навигация, адаптивный дизайн и полная информация о контактах всегда помогают клиентам быстро найти нужную информацию и оставить заявку на сотрудничество сегодня.",
-    link: "#",
+    link: "https://www.bigfitness.b",
   },
   {
     title: "Custom Web",
     category: "Сложные проекты",
     video: "/mayak.mp4",
-    gallery: [Project11, Project12, Project13],
+    gallery: [mayak1, mayak2, mayak3],
     description: "Мы предлагаем индивидуальные решения под любые задачи вашего бизнеса. Независимо от сложности проекта, наша команда разрабатывает персонализированные стратегии для достижения целей. Гибкий подход, учет всех требований и пожеланий заказчика гарантируют высокий результат. Каждый проект уникален, поэтому мы создаем продукты, которые идеально соответствуют вашим потребностям и помогают развиваться эффективнее.",
-    link: "#",
+    link: "https://www.d-k-mayak.ru",
   },
 ];
 

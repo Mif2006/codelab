@@ -5,7 +5,6 @@ import { OrbitControls, useGLTF, Environment, ContactShadows, Html } from "@reac
 import * as THREE from "three";
 
 import sectionAbout from "@/assets/section-about.jpg";
-// portrait1 is removed as it's replaced by the 3D model
 import gallery1 from "@/assets/gallery-1.jpg";
 
 // --- 3D Model Components ---
@@ -13,12 +12,24 @@ import gallery1 from "@/assets/gallery-1.jpg";
 const Model = () => {
   const { scene } = useGLTF("/models/appl_e_iph_one_16/scene.gltf");
   
+  // Адаптивный масштаб: +5% от предыдущего (21 на мобильных, 21 на ПК)
+  const [scale, setScale] = React.useState(21);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setScale(window.innerWidth < 1024 ? 21 : 21);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   return (
     <primitive 
       object={scene} 
-      scale={19} 
-      position={[0, -1.85, 0]} 
-      rotation={[0, -Math.PI / -4.2, 0]} 
+      scale={scale} 
+      position={[0, -1.2, 0]} 
+      rotation={[0, -Math.PI / 4, 0]} 
     />
   );
 };
@@ -27,7 +38,6 @@ useGLTF.preload("/models/appl_e_iph_one_16/scene.gltf");
 
 const IPhoneViewer: React.FC = () => {
   return (
-    // Changed to take up 100% of the parent container with a transparent background
     <div className="w-full h-full cursor-grab active:cursor-grabbing">
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={9} />
@@ -36,13 +46,11 @@ const IPhoneViewer: React.FC = () => {
         
         <Environment preset="city" />
         
-        {/* Inside Canvas, standard HTML must be wrapped in <Html> */}
         <Suspense fallback={<Html center><span className="text-white/50 text-sm">Загрузка 3D...</span></Html>}>
           <Model />
           <ContactShadows position={[0, -1, 0]} opacity={0.5} scale={10} blur={2} far={4} />
         </Suspense>
 
-        {/* Disabled zoom/pan so it doesn't interrupt page scrolling */}
         <OrbitControls enablePan={false} enableZoom={false} enableRotate={true} />
       </Canvas>
     </div>
@@ -132,24 +140,22 @@ const AboutSection = ({ isActive }: { isActive: boolean }) => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gold/20 blur-[60px] rounded-full lg:hidden animate-pulse pointer-events-none" />
 
           {/* 3D Model Container */}
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 pointer-events-none z-20 transition-opacity duration-300">
-              <svg className="w-4 h-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <span className="text-white/80 text-[10px] sm:text-xs font-body tracking-wider uppercase whitespace-nowrap">
-                Покрутите телефон
-              </span>
-            </div>
           <div
             ref={imageRef}
-            className="relative z-10 w-72 sm:h-[77vh] md:h-84 sm:w-80 lg:w-86 lg:h-[77vh] overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] lg:shadow-2xl border border-white/5 lg:border-none bg-black/20 backdrop-blur-sm rounded-xl"
+            className="relative z-10 w-72 h-[420px] sm:w-80 sm:h-[480px] lg:w-86 lg:h-[77vh] overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] lg:shadow-2xl border border-white/5 lg:border-none bg-black/20 backdrop-blur-sm rounded-xl"
           >
+            {/* Подсказка для вращения (появляется поверх 3D) */}
+            <div className="absolute top-3 right-3 lg:top-6 lg:right-6 z-30 flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 text-[10px] text-white/70 select-none pointer-events-none">
+              <svg className="w-3 h-3 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 2v6h-6" />
+                <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+                <path d="M3 22v-6h6" />
+                <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+              </svg>
+              <span>Покрутите</span>
+            </div>
+            
             <IPhoneViewer />
-            
-            {/* --- NEW: Interactive Hint --- */}
-          
-            {/* --------------------------- */}
-            
           </div>
 
           {/* Floating Element (Gallery) */}
