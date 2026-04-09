@@ -189,7 +189,7 @@ const GallerySection = ({ isActive }: { isActive: boolean }) => {
               ref={staticTextRef}
               className="absolute font-body text-[11px] md:text-sm tracking-[0.3em] uppercase whitespace-nowrap text-[#B8963F]"
             >
-              О Нас
+              Наши Услуги
             </span>
 
             <div ref={marqueeWrapperRef} className="absolute flex w-full h-full items-center pointer-events-none">
