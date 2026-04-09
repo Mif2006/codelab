@@ -12,7 +12,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     name: "",
     email: "",
     phone: "",
-    countryCode: "+7",
+    countryCode: "+375",
     message: "",
   });
 
@@ -55,7 +55,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
         name: "",
         email: "",
         phone: "",
-        countryCode: "+7",
+        countryCode: "+375",
         message: "",
       });
     } catch (err) {
