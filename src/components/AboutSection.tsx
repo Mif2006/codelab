@@ -43,6 +43,7 @@ const IPhoneViewer: React.FC = () => {
         <ambientLight intensity={9} />
         <directionalLight position={[10, 10, 5]} intensity={2} />
         <directionalLight position={[0, -10, 0]} intensity={5} />
+        <pointLight position={[0, 0, 0]} intensity={20} />
         
         <Environment preset="city" />
         
