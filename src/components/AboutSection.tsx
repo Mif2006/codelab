@@ -160,7 +160,7 @@ const AboutSection = ({ isActive }: { isActive: boolean }) => {
           </div>
 
           {/* Floating Element (Gallery) */}
-          <div className="absolute -bottom-10 -right-6 lg:-bottom-12 lg:-right-12 w-12 h-12 lg:w-40 lg:h-40 overflow-hidden border-2 border-gold glow-gold animate-float shadow-2xl z-20">
+          <div className="absolute -bottom-10 -right-6 lg:-bottom-12 lg:-right-12 w-20 h-20 lg:w-40 lg:h-40 overflow-hidden border-2 border-gold glow-gold animate-float shadow-2xl z-20">
             <img src={gallery1} alt="Мокап сайта" className="w-full h-full object-cover" />
           </div>
 
