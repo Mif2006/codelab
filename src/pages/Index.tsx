@@ -8,6 +8,7 @@ import GallerySection from "@/components/GallerySection";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import StarsCanvas from "@/components/Starbackground";
+import ChatWidget from "@/components/ChatBot";
 
 const SECTIONS = 5;
 
@@ -30,8 +31,8 @@ const Index = () => {
 
   const navigateTo = useCallback((index: number) => {
     if (isAnimating.current || index === activeIndex || index < 0 || index >= SECTIONS) return;
-    
-    // На мобилках просто скроллим к элементу (если нужно программно)
+
+    // На мобилках просто скроллим к элементу
     if (isMobile) {
       const target = document.querySelectorAll('.section-panel')[index];
       target?.scrollIntoView({ behavior: 'smooth' });
@@ -59,7 +60,7 @@ const Index = () => {
   }, [activeIndex, isMobile]);
 
   useEffect(() => {
-    if (isMobile) return; // Выключаем перехват колеса на мобилках
+    if (isMobile) return;
 
     let accumulated = 0;
     const threshold = 80;
@@ -105,11 +106,11 @@ const Index = () => {
   return (
     <div className={`${isMobile ? "relative overflow-y-auto" : "fixed inset-0 overflow-hidden"} bg-background`}>
       {/* <CustomCursor /> */}
-   
-      {/* Навигация (скрываем на мобилках для чистоты или оставляем как бургер) */}
+
+      {/* Navigation dots — desktop only */}
       {!isMobile && <NavigationDots activeIndex={activeIndex} onNavigate={navigateTo} />}
-      
-      {/* Прогресс-бар (сверху) */}
+
+      {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 h-[2px] z-[100]">
         <div
           className="h-full transition-all duration-500 ease-out"
@@ -120,31 +121,38 @@ const Index = () => {
         />
       </div>
 
-      {/* Счетчик секций (внизу слева) */}
+      {/* Section counter — bottom left, desktop */}
       <div className="hidden md:flex items-center fixed bottom-8 left-8 z-50 font-body text-xs tracking-[0.2em] text-muted-foreground mix-blend-difference">
         <span className="text-primary font-display text-2xl">{String(activeIndex + 1).padStart(2, "0")}</span>
         <span className="mx-2">/</span>
         <span>{String(SECTIONS).padStart(2, "0")}</span>
       </div>
 
-      {/* Контейнер панелей */}
+      {/* Sections container */}
       <div
         ref={containerRef}
         className={`flex ${isMobile ? "flex-col w-full h-auto" : "h-screen"}`}
-        style={{ 
+        style={{
           width: isMobile ? "100%" : `${SECTIONS * 100}vw`,
-          // На мобильных отключаем трансформацию GSAP
-          transform: isMobile ? "none" : undefined 
+          transform: isMobile ? "none" : undefined,
         }}
       >
         <HeroSection scrollProgress={scrollProgress} onNavigate={navigateTo} />
-        {/* isActive={true} на мобилках, чтобы анимации срабатывали при скролле */}
         <ProjectsSection isActive={isMobile ? true : activeIndex === 1} />
         <GallerySection isActive={isMobile ? true : activeIndex === 2} />
         <AboutSection isActive={isMobile ? true : activeIndex === 3} />
         <ContactSection isActive={isMobile ? true : activeIndex === 4} />
-
       </div>
+
+      {/*
+        ChatWidget is intentionally placed OUTSIDE the sections container.
+        - position: fixed keeps it anchored to the viewport regardless of
+          which section is active (desktop GSAP scroll) or how far the user
+          has scrolled (mobile).
+        - z-index 9999 in the widget ensures it floats above everything.
+        - bottom: 100px in the widget clears the section counter text.
+      */}
+      <ChatWidget />
     </div>
   );
 };
