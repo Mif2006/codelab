@@ -124,7 +124,7 @@ const ProjectsSection = ({ isActive }: { isActive: boolean }) => {
   };
 
   return (
-    <section className="section-panel flex flex-col lg:flex-row relative min-h-screen py-20 lg:py-0">
+    <section id="projects" className="section-panel flex flex-col lg:flex-row relative min-h-screen py-20 lg:py-0">
       <div ref={bgRef} className="absolute inset-0">
         <img src={sectionArch} alt="Фон" className="w-full h-full object-cover opacity-30" />
         <div

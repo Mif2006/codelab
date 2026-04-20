@@ -5,36 +5,31 @@ const GOLD        = "#C9A84C";
 const GOLD_LIGHT  = "#E8C97A";
 const GOLD_DARK   = "#8B6914";
 
-// ─── Telegram ───────────────────────────────────────────────────────────────
-
-
+// ─── API Handler ────────────────────────────────────────────────────────────
 async function sendToApi(name: string, contact: string, message: string) {
-    // Parse contact: prefer email, fallback to phone, or default
-    let email = "";
-    let phone = "";
-    
-    if (contact.includes("@")) {
-      email = contact;
-      phone = "Не указан";
-    } else if (contact.match(/^[\d\s\+\-\(\)]{7,}$/)) {
-      phone = contact;
-      email = "not-provided@example.com";
-    } else {
-      // Generic fallback if format is unclear
-      email = "not-provided@example.com";
-      phone = "Не указан";
-    }
+  let email = "";
+  let phone = "";
   
-    try {
-      await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, message }),
-      });
-    } catch {
-      // Silent fail — optionally add console.error for debugging
-    }
+  // Parse contact: prefer email, fallback to phone, or default
+  if (contact.includes("@")) {
+    email = contact;
+    phone = "Не указан";
+  } else if (contact.match(/^[\d\s\+\-\(\)]{7,}$/)) {
+    phone = contact;
+    email = "not-provided@example.com";
+  } else {
+    email = "not-provided@example.com";
+    phone = "Не указан";
   }
+
+  try {
+    await fetch("/api/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone, message }),
+    });
+  } catch { /* silent */ }
+}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 type Step = "greeting" | "name" | "contact" | "message" | "done";
@@ -50,14 +45,13 @@ interface BotMessage {
 interface NavCard {
   label: string;
   desc: string;
-  section: number; // 0-based index matching Index.tsx SECTIONS
+  hash: string; // Anchor hash, e.g. "#projects"
   icon: string;
 }
 
 // ─── Section nav cards ───────────────────────────────────────────────────────
 const NAV_CARDS: NavCard[] = [
-  { label: "Портфолио и цены", desc: "Наши работы и стоимость", section: 1, icon: "◈" },
-//   { label: "Связаться с нами", desc: "Форма обратной связи",    section: 4, icon: "✉" },
+  { label: "Портфолио и цены", desc: "Наши работы и стоимость", hash: "#projects", icon: "◈" },
 ];
 
 // ─── Conversation script ─────────────────────────────────────────────────────
@@ -205,15 +199,6 @@ const S: Record<string, React.CSSProperties> = {
     padding: "8px 13px 0",
     flexShrink: 0,
   },
-//   stepDot: (active: boolean, done: boolean): React.CSSProperties => ({
-//     flex: 1, height: "2px", borderRadius: "2px",
-//     background: done
-//       ? GOLD
-//       : active
-//         ? `rgba(201,168,76,0.5)`
-//         : "rgba(201,168,76,0.12)",
-//     transition: "background .4s",
-//   }),
   inputArea: {
     padding: "9px 12px 11px",
     borderTop: `1px solid rgba(201,168,76,0.12)`,
@@ -256,16 +241,16 @@ const S: Record<string, React.CSSProperties> = {
   },
 };
 
-// ─── Dynamic style helper (placed AFTER S object) ────────────────────────────
+// ─── Dynamic style helper (MOVED OUTSIDE S) ─────────────────────────────────
 const getStepDotStyle = (active: boolean, done: boolean): React.CSSProperties => ({
-    flex: 1, height: "2px", borderRadius: "2px",
-    background: done
-      ? GOLD
-      : active
-        ? `rgba(201,168,76,0.5)`
-        : "rgba(201,168,76,0.12)",
-    transition: "background .4s",
-  });
+  flex: 1, height: "2px", borderRadius: "2px",
+  background: done
+    ? GOLD
+    : active
+      ? `rgba(201,168,76,0.5)`
+      : "rgba(201,168,76,0.12)",
+  transition: "background .4s",
+});
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 function TypingDots() {
@@ -282,15 +267,15 @@ function TypingDots() {
   );
 }
 
-function NavCards({ cards, onNavigate }: { cards: NavCard[]; onNavigate: (s: number) => void }) {
+function NavCards({ cards, onNavigate }: { cards: NavCard[]; onNavigate: (hash: string) => void }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignSelf: "flex-start", width: "90%" }}>
       {cards.map((c) => (
         <button
-          key={c.section}
+          key={c.hash}
           className="cl-nav-card"
           style={S.navCard}
-          onClick={() => onNavigate(c.section)}
+          onClick={() => onNavigate(c.hash)}
         >
           <div style={S.navIcon}>{c.icon}</div>
           <div>
@@ -316,12 +301,7 @@ const STEPS: Step[] = ["greeting", "name", "contact", "message", "done"];
 const PROGRESS_STEPS: Step[] = ["name", "contact", "message", "done"];
 
 // ─── Main widget ──────────────────────────────────────────────────────────────
-interface ChatWidgetProps {
-  /** Called when user clicks a section nav card. Matches navigateTo() in Index.tsx */
-  onNavigate?: (index: number) => void;
-}
-
-export default function ChatWidget({ onNavigate }: ChatWidgetProps) {
+export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [unread, setUnread] = useState(1);
@@ -419,7 +399,7 @@ export default function ChatWidget({ onNavigate }: ChatWidgetProps) {
       advanceStep("message");
     } else if (step === "message") {
       messageRef.current = val;
-      // Send to Telegram
+      // Send to API
       sendToApi(nameRef.current, contactRef.current, val);
       // Done — show nav cards again
       advanceStep("done", { navCards: NAV_CARDS });
@@ -437,8 +417,8 @@ export default function ChatWidget({ onNavigate }: ChatWidgetProps) {
   };
 
   // ── Navigate to section ──
-  const goToSection = (index: number) => {
-    onNavigate?.(index);
+  const goToSection = (hash: string) => {
+    document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
     setOpen(false);
   };
 
@@ -519,13 +499,12 @@ export default function ChatWidget({ onNavigate }: ChatWidgetProps) {
 
           {/* Progress bar — only shown after greeting */}
           {step !== "greeting" && (
-  <div style={S.stepsBar}>
-    {PROGRESS_STEPS.map((s, i) => (
-      // ✅ FIXED: call the standalone function instead
-      <div key={s} style={getStepDotStyle(i === progressIdx, i < progressIdx)} />
-    ))}
-  </div>
-)}
+            <div style={S.stepsBar}>
+              {PROGRESS_STEPS.map((s, i) => (
+                <div key={s} style={getStepDotStyle(i === progressIdx, i < progressIdx)} />
+              ))}
+            </div>
+          )}
 
           {/* Step hint label */}
           {step !== "greeting" && step !== "done" && (
