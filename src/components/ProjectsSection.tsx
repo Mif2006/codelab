@@ -40,11 +40,43 @@ export type Project = {
   link: string;
 };
 
-const workTypes = [
-  { img: Project10, title: "Landing Page", category: "Лендинг", price: "от 199 BYN" },
-  { img: Project11, title: "Интернет магазин", category: "Магазин", price: "от 899 BYN" },
-  { img: Project12, title: "Corporate", category: "Корпоративный", price: "от 599 BYN" },
-  { img: Project28, title: "Custom Web", category: "Индивидуальные проекты", price: "Индивидуально" },
+type WorkType = {
+  img: string;
+  title: string;
+  category: string;
+  priceByn: string;
+  priceUsd: string;
+};
+
+const workTypes: WorkType[] = [
+  { 
+    img: Project10, 
+    title: "Landing Page", 
+    category: "Лендинг", 
+    priceByn: "от 199 BYN",
+    priceUsd: "from ~$"
+  },
+  { 
+    img: Project11, 
+    title: "Интернет магазин", 
+    category: "Магазин", 
+    priceByn: "от 899 BYN",
+    priceUsd: "from ~$280"
+  },
+  { 
+    img: Project12, 
+    title: "Corporate", 
+    category: "Корпоративный", 
+    priceByn: "от 599 BYN",
+    priceUsd: "from ~$180"
+  },
+  { 
+    img: Project28, 
+    title: "Custom Web", 
+    category: "Индивидуальные проекты", 
+    priceByn: "Индивидуально",
+    priceUsd: "Custom pricing"
+  },
 ];
 
 const projectsData: Project[] = [
@@ -85,6 +117,7 @@ const projectsData: Project[] = [
 const ProjectsSection = ({ isActive }: { isActive: boolean }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [currency, setCurrency] = useState<'BYN' | 'USD'>('BYN');
 
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -123,6 +156,14 @@ const ProjectsSection = ({ isActive }: { isActive: boolean }) => {
     }
   };
 
+  const getPrice = (work: WorkType) => {
+    return currency === 'BYN' ? work.priceByn : work.priceUsd;
+  };
+
+  const toggleCurrency = () => {
+    setCurrency(prev => prev === 'BYN' ? 'USD' : 'BYN');
+  };
+
   return (
     <section id="projects" className="section-panel flex flex-col lg:flex-row relative min-h-screen py-20 lg:py-0">
       <div ref={bgRef} className="absolute inset-0">
@@ -151,7 +192,37 @@ const ProjectsSection = ({ isActive }: { isActive: boolean }) => {
           Каждый проект — это инструмент для бизнеса. Выберите формат, который подходит под ваши задачи. Выберите подходящий формат сайта. Все проекты адаптируем под мобильные устройства и SEO- требования."
         </p>
 
-        <div className="hidden lg:block h-24 mt-12 transition-all">
+        {/* Currency Toggle Button */}
+       {/* Currency Toggle Button */}
+<div className="flex items-center gap-3 mt-6">
+  <span className={`text-xs font-medium transition-colors ${currency === 'BYN' ? 'text-foreground' : 'text-muted-foreground'}`}>
+    BYN
+  </span>
+  <button
+    onClick={toggleCurrency}
+    className={`relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+      currency === 'USD' ? 'bg-primary' : 'bg-white/20'
+    }`}
+    aria-label={`Switch to ${currency === 'BYN' ? 'USD' : 'BYN'}`}
+  >
+    {/* Toggle knob */}
+    <span
+      className={`absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300 ease-out flex items-center justify-center ${
+        currency === 'USD' ? 'translate-x-6' : 'translate-x-0'
+      }`}
+    >
+      {/* Optional: tiny currency indicator inside knob */}
+      <span className={`text-[9px] font-bold ${currency === 'USD' ? 'text-primary' : 'text-muted-foreground'}`}>
+        {currency === 'USD' ? '$' : 'Br'}
+      </span>
+    </span>
+  </button>
+  <span className={`text-xs font-medium transition-colors ${currency === 'USD' ? 'text-foreground' : 'text-muted-foreground'}`}>
+    USD
+  </span>
+</div>
+
+        <div className="hidden lg:block h-24 mt-4 transition-all">
           {hoveredIndex !== null && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
               <p className="font-display text-3xl text-foreground">
@@ -197,7 +268,7 @@ const ProjectsSection = ({ isActive }: { isActive: boolean }) => {
               <div className="absolute inset-0 bg-gradient-overlay opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary">
-                  {work.price}
+                  {getPrice(work)}
                 </p>
                 <p className="font-display text-lg text-foreground mt-1">
                   {work.title}
