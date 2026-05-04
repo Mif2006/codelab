@@ -11,9 +11,14 @@ import Web3 from "@/assets/Web3.jpeg";
 import Web4 from "@/assets/Web4.jpeg";
 import Web5 from "@/assets/Web5.jpeg";
 import Web6 from "@/assets/Web6.jpeg";
+import Web7 from "@/assets/Web7.jpeg";
+import Web8 from "@/assets/Web8.jpeg";
+import Web9 from "@/assets/Web9.jpeg";
+import Web10 from "@/assets/Web10.jpeg";
+import Web11 from "@/assets/Web11.jpeg";
 import sectionLandscape from "@/assets/section-landscape.jpg";
 
-const images = [Web1, Web2, Web3, Web4, Web5, Web6];
+const images = [Web1, Web2, Web11, Web10, Web5, Web6];
 
 const GallerySection = ({ isActive }: { isActive: boolean }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
