@@ -77,7 +77,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     }
   }, [isActive]);
 
-  const title = "Свяжитесь с нами";
+  const title = "Свяжитесь с\nнами";
 
   return (
     <section
@@ -98,15 +98,18 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
       <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-12 lg:pl-16 lg:pr-0 mb-16 lg:mb-0 mt-8 lg:mt-0">
         <div className="overflow-hidden" style={{ perspective: "600px" }}>
           <h2 className="font-display text-left text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none flex flex-wrap">
-            {title.split("").map((char, i) => (
-              <span
-                key={i}
-                ref={(el) => (lettersRef.current[i] = el)}
-                className="inline-block text-gradient-gold"
-              >
-                {char === " " ? "\u00A0" : char}
-              </span>
-            ))}
+            {title.split("").map((char, i) => {
+              if (char === "\n") return <br key={i} />;
+              return (
+                <span
+                  key={i}
+                  ref={(el) => (lettersRef.current[i] = el)}
+                  className="inline-block text-gradient-gold"
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              );
+            })}
           </h2>
         </div>
         <div className="w-16 lg:w-24 h-[1px] bg-primary my-6 lg:my-10" />
