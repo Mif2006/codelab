@@ -73,7 +73,7 @@ const HeroSection = ({ scrollProgress, onNavigate }: HeroSectionProps) => {
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-md transition-all duration-700 group-hover:bg-primary/40 group-hover:blur-xl" />
             <div className="relative px-6 py-3 md:px-8 md:py-3.5 rounded-full border border-primary/30 bg-black/40 backdrop-blur-md flex items-center justify-center transition-colors duration-500 group-hover:border-primary/60">
               <span className="font-body text-primary tracking-[0.15em] text-xs md:text-sm uppercase font-medium">
-                Цены от 199 BYN
+                Цены от 299 BYN
               </span>
             </div>
           </div>
