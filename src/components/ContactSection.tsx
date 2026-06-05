@@ -7,7 +7,6 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
 
-  // --- Logic from Component 1 ---
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -63,6 +62,9 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     }
   };
 
+  // Split title into lines so "нами" always starts on its own line
+  const titleLines = ["Свяжитесь с", "нами"];
+
   useEffect(() => {
     if (isActive) {
       lettersRef.current.forEach((letter, i) => {
@@ -70,14 +72,22 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
           gsap.fromTo(
             letter,
             { y: 120, rotateX: 90, opacity: 0 },
-            { y: 0, rotateX: 0, opacity: 1, duration: 1, delay: i * 0.05, ease: "power4.out" }
+            {
+              y: 0,
+              rotateX: 0,
+              opacity: 1,
+              duration: 1,
+              delay: i * 0.05,
+              ease: "power4.out",
+            }
           );
         }
       });
     }
   }, [isActive]);
 
-  const title = `Свяжитесь с \nнами`;
+  // Build a flat global index for lettersRef across all lines
+  let globalCharIndex = 0;
 
   return (
     <section
@@ -85,43 +95,59 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
       className="section-panel flex flex-col lg:flex-row relative min-h-screen py-20 lg:py-0 overflow-x-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
-        <img src={sectionContact} alt="Contact bg" className="w-full h-full object-cover opacity-50" />
+        <img
+          src={sectionContact}
+          alt="Contact bg"
+          className="w-full h-full object-cover opacity-50"
+        />
         <div
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(circle at 30% 50%, hsl(0 0% 4% / 0.6), hsl(0 0% 4% / 0.95))",
+            background:
+              "radial-gradient(circle at 30% 50%, hsl(0 0% 4% / 0.6), hsl(0 0% 4% / 0.95))",
           }}
         />
       </div>
 
-      {/* LEFT SIDE: Giant text & Socials (from Component 2) */}
+      {/* LEFT SIDE */}
       <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-12 lg:pl-16 lg:pr-0 mb-16 lg:mb-0 mt-8 lg:mt-0">
-        <div className="overflow-hidden" style={{ perspective: "600px" }}>
-          <h2 className="font-display text-left text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none flex flex-wrap">
-            {title.split("").map((char, i) => {
-              if (char === "\n") return <br key={i} />;
-              return (
-                <span
-                  key={i}
-                  ref={(el) => (lettersRef.current[i] = el)}
-                  className="inline-block text-gradient-gold"
-                >
-                  {char === " " ? "\u00A0" : char}
-                </span>
-              );
-            })}
-          </h2>
-        </div>
+        <h2 className="font-display text-left text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none">
+          {titleLines.map((line, lineIndex) => {
+            const lineStartIndex = globalCharIndex;
+
+            return (
+              <div
+                key={lineIndex}
+                className="flex overflow-hidden"
+                style={{ perspective: "600px" }}
+              >
+                {line.split("").map((char, charIndex) => {
+                  const refIndex = lineStartIndex + charIndex;
+                  globalCharIndex = refIndex + 1;
+
+                  return (
+                    <span
+                      key={charIndex}
+                      ref={(el) => (lettersRef.current[refIndex] = el)}
+                      className="inline-block text-gradient-gold"
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </span>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </h2>
+
         <div className="w-16 lg:w-24 h-[1px] bg-primary my-6 lg:my-10" />
         <p className="font-body text-muted-foreground text-sm max-w-sm leading-relaxed">
-          Есть идея для сайта? Давайте создадим нечто выдающееся вместе. Каждый успешный веб-проект
-          начинается с простого разговора.
+          Есть идея для сайта? Давайте создадим нечто выдающееся вместе. Каждый
+          успешный веб-проект начинается с простого разговора.
         </p>
-
-     
       </div>
 
-      {/* RIGHT SIDE: Functional Form (from Component 1) */}
+      {/* RIGHT SIDE: Form */}
       <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 md:px-12 lg:pr-16 lg:pl-0 pb-12 lg:pb-0">
         <div className="relative w-full max-w-md">
           {/* Accent Image */}
@@ -132,7 +158,9 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
           <div className="relative z-20 space-y-6 bg-background/5 lg:bg-transparent p-6 lg:p-0 rounded-2xl border border-white/5 lg:border-none backdrop-blur-sm lg:backdrop-blur-none">
             {/* NAME */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Имя</label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                Имя
+              </label>
               <input
                 type="text"
                 value={form.name}
@@ -144,7 +172,9 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
 
             {/* EMAIL */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Email</label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                Email
+              </label>
               <input
                 type="email"
                 value={form.email}
@@ -154,25 +184,42 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
               />
             </div>
 
-            {/* PHONE (Logic from Component 1) */}
+            {/* PHONE */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Телефон</label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                Телефон
+              </label>
               <div className="flex gap-2">
                 <select
                   value={form.countryCode}
-                  onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, countryCode: e.target.value })
+                  }
                   className="bg-transparent border-b border-border text-foreground py-3 focus:outline-none focus:border-primary transition-colors"
                 >
-                  <option className="bg-black text-white" value="+375">+375</option>
-                  <option className="bg-black text-white" value="+7">+7</option>
-                  <option className="bg-black text-white" value="+1">+1</option>
-                  <option className="bg-black text-white" value="+44">+44</option>
+                  <option className="bg-black text-white" value="+375">
+                    +375
+                  </option>
+                  <option className="bg-black text-white" value="+7">
+                    +7
+                  </option>
+                  <option className="bg-black text-white" value="+1">
+                    +1
+                  </option>
+                  <option className="bg-black text-white" value="+44">
+                    +44
+                  </option>
                 </select>
 
                 <input
                   type="text"
                   value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "") })}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      phone: e.target.value.replace(/\D/g, ""),
+                    })
+                  }
                   placeholder="9991234567"
                   className="w-full bg-transparent border-b border-border py-3 font-body text-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                 />
@@ -181,7 +228,9 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
 
             {/* MESSAGE */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Сообщение</label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                Сообщение
+              </label>
               <textarea
                 rows={3}
                 value={form.message}
@@ -192,7 +241,11 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
             </div>
 
             {/* ERROR */}
-            {error && <p className="text-red-500 text-[10px] tracking-widest uppercase">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-[10px] tracking-widest uppercase">
+                {error}
+              </p>
+            )}
 
             {/* BUTTON */}
             <button
@@ -209,7 +262,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
         </div>
       </div>
 
-      {/* Bottom copyright (from Component 2) */}
+      {/* Bottom copyright */}
       <div className="absolute bottom-6 left-0 right-0 text-center z-10 font-body text-[9px] lg:text-[10px] tracking-[0.3em] uppercase text-muted-foreground px-4">
         © 2026 Code Lab. Все права защищены.
       </div>
