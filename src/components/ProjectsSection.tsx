@@ -53,21 +53,21 @@ const workTypes: WorkType[] = [
     img: Project10, 
     title: "Landing Page", 
     category: "Лендинг", 
-    priceByn: "от 199 BYN",
+    priceByn: "от 299 BYN",
     priceUsd: "from ~$70"
   },
   { 
     img: Project11, 
     title: "Интернет магазин", 
     category: "Магазин", 
-    priceByn: "от 899 BYN",
+    priceByn: "от 999 BYN",
     priceUsd: "from ~$290"
   },
   { 
     img: Project12, 
     title: "Corporate", 
     category: "Корпоративный", 
-    priceByn: "от 599 BYN",
+    priceByn: "от 699 BYN",
     priceUsd: "from ~$190"
   },
   { 
