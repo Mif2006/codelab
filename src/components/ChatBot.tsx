@@ -34,8 +34,8 @@ async function sendToApi(name: string, contact: string, message: string) {
 const SOCIALS = [
   {
     label: "Instagram",
-    handle: "@CodeLabW",
-    href: "https://instagram.com/codelabw",
+    handle: "@YarGrdvv",
+    href: "https://instagram.com/YarGrdvv",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <rect x="2" y="2" width="20" height="20" rx="5" stroke={GOLD} strokeWidth="1.8"/>
