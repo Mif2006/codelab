@@ -16,6 +16,8 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const validate = () => {
     if (!form.name.trim()) return "Введите имя";
@@ -33,6 +35,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     }
 
     setError("");
+    setIsSubmitting(true);
 
     try {
       await fetch("/api/send", {
@@ -48,7 +51,8 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
         }),
       });
 
-      alert("Сообщение отправлено 🚀");
+      setIsSubmitting(false);
+      setIsSuccess(true);
 
       setForm({
         name: "",
@@ -57,12 +61,17 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
         countryCode: "+375",
         message: "",
       });
+
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 3000);
+
     } catch (err) {
-      alert("Ошибка отправки");
+      setIsSubmitting(false);
+      setError("Ошибка отправки. Попробуйте позже.");
     }
   };
 
-  // Split title into lines so "нами" always starts on its own line
   const titleLines = ["Свяжитесь с", "нами"];
 
   useEffect(() => {
@@ -86,7 +95,6 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     }
   }, [isActive]);
 
-  // Build a flat global index for lettersRef across all lines
   let globalCharIndex = 0;
 
   return (
@@ -111,7 +119,7 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
 
       {/* LEFT SIDE */}
       <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-12 lg:pl-16 lg:pr-0 mb-16 lg:mb-0 mt-8 lg:mt-0">
-        <h2 className="font-display text-left text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none">
+        <h2 className="font-display text-left text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none relative z-10">
           {titleLines.map((line, lineIndex) => {
             const lineStartIndex = globalCharIndex;
 
@@ -140,27 +148,106 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
           })}
         </h2>
 
-        <div className="w-16 lg:w-24 h-[1px] bg-primary my-6 lg:my-10" />
-        <p className="font-body text-muted-foreground text-sm max-w-sm leading-relaxed">
+        <div className="w-16 lg:w-24 h-[1px] bg-primary my-6 lg:my-10 relative z-10" />
+        <p className="font-body text-muted-foreground text-sm max-w-sm leading-relaxed mb-10 relative z-10">
           Есть идея для сайта? Давайте создадим нечто выдающееся вместе. Каждый
           успешный веб-проект начинается с простого разговора.
         </p>
+
+        {/* Секция контактов */}
+        <div className="flex flex-col gap-6 relative z-10">
+          <a
+            href="https://t.me/CodeLabW"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-5 w-fit"
+          >
+            <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 group-hover:border-primary text-muted-foreground group-hover:text-primary transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m22 2-7 20-4-9-9-4Z" />
+                <path d="M22 2 11 13" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 transform transition-transform duration-300 group-hover:translate-x-2">
+              <span className="font-body text-xs lg:text-sm tracking-[0.15em] uppercase text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                @CodeLabW
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-primary">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
+            </div>
+          </a>
+          
+          <a
+            href="https://wa.me/375257953650"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-5 w-fit"
+          >
+            <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 group-hover:border-primary text-muted-foreground group-hover:text-primary transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 transform transition-transform duration-300 group-hover:translate-x-2">
+              <span className="font-body text-xs lg:text-sm tracking-[0.15em] uppercase text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                WHATSAPP
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-primary">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
+            </div>
+          </a>
+
+          <a
+            href="https://tiktok.com/@codelabweb"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-5 w-fit"
+          >
+            <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 group-hover:border-primary text-muted-foreground group-hover:text-primary transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v3a8 8 0 0 1-5-1.5z" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2 transform transition-transform duration-300 group-hover:translate-x-2">
+              <span className="font-body text-xs lg:text-sm tracking-[0.15em] uppercase text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                @codelabweb
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-primary">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      {/* КРУГЛЫЙ БЕЙДЖ ПО ЦЕНТРУ СЕКЦИИ (СДВИнут ЛЕВЕЕ И ИСПРАВЛЕНА АНИМАЦИЯ) */}
+      <div className="absolute top-1/2 left-[40%] -translate-x-1/2 -translate-y-1/2 hidden sm:block z-20 pointer-events-none">
+        <div className="w-64 h-64 animate-[spin_60s_linear_infinite] opacity-10">
+          <svg viewBox="0 0 100 100" width="100%" height="100%">
+            <defs>
+              <path id="circle" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+            </defs>
+            <text fontSize="11" fill="currentColor" className="font-body tracking-[0.2em] uppercase text-primary">
+              <textPath href="#circle">
+                • CODELAB • WEB STUDIO • DEV •
+              </textPath>
+            </text>
+          </svg>
+        </div>
       </div>
 
       {/* RIGHT SIDE: Form */}
       <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 md:px-12 lg:pr-16 lg:pl-0 pb-12 lg:pb-0">
         <div className="relative w-full max-w-md">
-          {/* Accent Image */}
           <div className="hidden lg:block absolute -top-20 -right-20 w-48 h-48 overflow-hidden opacity-40 animate-float pointer-events-none">
             <img src={heroBg} alt="Accent" className="w-full h-full object-cover" />
           </div>
 
           <div className="relative z-20 space-y-6 bg-background/5 lg:bg-transparent p-6 lg:p-0 rounded-2xl border border-white/5 lg:border-none backdrop-blur-sm lg:backdrop-blur-none">
-            {/* NAME */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-                Имя
-              </label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Имя</label>
               <input
                 type="text"
                 value={form.name}
@@ -170,11 +257,8 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
               />
             </div>
 
-            {/* EMAIL */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-                Email
-              </label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Email</label>
               <input
                 type="email"
                 value={form.email}
@@ -184,53 +268,32 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
               />
             </div>
 
-            {/* PHONE */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-                Телефон
-              </label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Телефон</label>
               <div className="flex gap-2">
                 <select
                   value={form.countryCode}
-                  onChange={(e) =>
-                    setForm({ ...form, countryCode: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, countryCode: e.target.value })}
                   className="bg-transparent border-b border-border text-foreground py-3 focus:outline-none focus:border-primary transition-colors"
                 >
-                  <option className="bg-black text-white" value="+375">
-                    +375
-                  </option>
-                  <option className="bg-black text-white" value="+7">
-                    +7
-                  </option>
-                  <option className="bg-black text-white" value="+1">
-                    +1
-                  </option>
-                  <option className="bg-black text-white" value="+44">
-                    +44
-                  </option>
+                  <option className="bg-black text-white" value="+375">+375</option>
+                  <option className="bg-black text-white" value="+7">+7</option>
+                  <option className="bg-black text-white" value="+1">+1</option>
+                  <option className="bg-black text-white" value="+44">+44</option>
                 </select>
 
                 <input
                   type="text"
                   value={form.phone}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      phone: e.target.value.replace(/\D/g, ""),
-                    })
-                  }
-                  placeholder="9991234567"
+                  onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "") })}
+                  placeholder="29 123-45-67"
                   className="w-full bg-transparent border-b border-border py-3 font-body text-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                 />
               </div>
             </div>
 
-            {/* MESSAGE */}
             <div>
-              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-                Сообщение
-              </label>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Сообщение</label>
               <textarea
                 rows={3}
                 value={form.message}
@@ -240,29 +303,27 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
               />
             </div>
 
-            {/* ERROR */}
             {error && (
-              <p className="text-red-500 text-[10px] tracking-widest uppercase">
-                {error}
-              </p>
+              <p className="text-red-500 text-[10px] tracking-widest uppercase">{error}</p>
             )}
 
-            {/* BUTTON */}
             <button
               onClick={handleSubmit}
-              data-cursor-hover
-              className="magnetic-btn w-full py-4 border border-gold font-body text-[10px] lg:text-xs tracking-[0.3em] uppercase text-primary hover:bg-primary hover:text-black transition-all duration-500 mt-4"
+              disabled={isSubmitting || isSuccess}
+              className={`magnetic-btn w-full py-4 border font-body text-[10px] lg:text-xs tracking-[0.3em] uppercase transition-all duration-500 mt-4 
+                ${isSuccess 
+                  ? "border-green-500 text-green-500 bg-green-500/10 cursor-default" 
+                  : "border-gold text-primary hover:bg-primary hover:text-black"
+                }`}
             >
-              Отправить сообщение
+              {isSubmitting ? "Отправка..." : isSuccess ? "Сообщение отправлено ✓" : "Отправить сообщение"}
             </button>
           </div>
 
-          {/* Decoration */}
           <div className="absolute -bottom-4 -left-4 lg:-bottom-8 lg:-left-8 w-12 h-12 lg:w-16 lg:h-16 border-b border-l border-gold/20 pointer-events-none" />
         </div>
       </div>
 
-      {/* Bottom copyright */}
       <div className="absolute bottom-6 left-0 right-0 text-center z-10 font-body text-[9px] lg:text-[10px] tracking-[0.3em] uppercase text-muted-foreground px-4">
         © 2026 Code Lab. Все права защищены.
       </div>
