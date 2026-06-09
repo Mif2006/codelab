@@ -4,15 +4,13 @@ import cors from "cors";
 
 const app = express();
 
-// Vercel handles CORS natively via vercel.json, but keeping this helps for local testing
 app.use(cors());
 app.use(express.json());
 
 app.post("/api/send", async (req, res) => {
   try {
-    const { name, email, phone, message } = req.body;
+    const { name, email, phone, message, telegramUsername, preferredSocialNetwork } = req.body;
 
-    // Fetch tokens from Environment Variables
     const TOKEN = process.env.TELEGRAM_TOKEN;
     const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
@@ -26,22 +24,17 @@ app.post("/api/send", async (req, res) => {
 👤 Имя: ${name}
 📧 Email: ${email}
 📱 Телефон: ${phone}
-💬 Сообщение: ${message}
+💬 Сообщение: ${message}${telegramUsername ? `\n✈️ Telegram: ${telegramUsername}` : ""}${preferredSocialNetwork ? `\n📲 Способ связи: ${preferredSocialNetwork}` : ""}
     `;
 
     const response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: CHAT_ID, text }),
     });
 
     const data = await response.json();
-    
+
     if (!data.ok) {
       throw new Error(data.description);
     }
@@ -53,7 +46,6 @@ app.post("/api/send", async (req, res) => {
   }
 });
 
-// If running locally, listen on a port. If on Vercel, export the app.
 if (process.env.NODE_ENV !== "production") {
   app.listen(3001, () => {
     console.log("🚀 Local server started on http://localhost:3001");
