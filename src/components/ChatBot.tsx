@@ -47,7 +47,7 @@ const SOCIALS = [
   {
     label: "Telegram",
     handle: "@CodeLabW",
-    href: "https://t.me/@CodeLabW",
+    href: "https://t.me/CodeLabW",
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
         <path d="M21.8 3.1L2.4 10.5c-1.3.5-1.3 1.3-.2 1.6l4.9 1.5 1.9 5.7c.3.7.2 1 1 1 .6 0 .9-.3 1.2-.6l2.9-2.8 5 3.7c.9.5 1.5.2 1.8-.8l3.1-14.6c.4-1.5-.6-2.2-1.2-1.9z" stroke={GOLD} strokeWidth="1.8" strokeLinejoin="round"/>
