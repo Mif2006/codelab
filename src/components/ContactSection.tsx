@@ -13,6 +13,8 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
     phone: "",
     countryCode: "+375",
     message: "",
+    telegramUsername: "", // Новое поле
+    preferredSocialNetwork: "", // Новое поле
   });
 
   const [error, setError] = useState("");
@@ -48,6 +50,8 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
           email: form.email,
           phone: `${form.countryCode}${form.phone}`,
           message: form.message,
+          telegramUsername: form.telegramUsername, // Новое поле
+          preferredSocialNetwork: form.preferredSocialNetwork, // Новое поле
         }),
       });
 
@@ -60,6 +64,8 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
         phone: "",
         countryCode: "+375",
         message: "",
+        telegramUsername: "", // Сброс нового поля
+        preferredSocialNetwork: "", // Сброс нового поля
       });
 
       setTimeout(() => {
@@ -290,6 +296,37 @@ const ContactSection = ({ isActive }: { isActive: boolean }) => {
                   className="w-full bg-transparent border-b border-border py-3 font-body text-foreground focus:outline-none focus:border-primary transition-colors duration-300"
                 />
               </div>
+            </div>
+
+            {/* Новое поле: Username Telegram (опционально) */}
+            <div>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                Username Telegram <span className="text-xs opacity-60">(опционально)</span>
+              </label>
+              <input
+                type="text"
+                value={form.telegramUsername}
+                onChange={(e) => setForm({ ...form, telegramUsername: e.target.value })}
+                className="w-full bg-transparent border-b border-border py-3 font-body text-foreground focus:outline-none focus:border-primary transition-colors duration-300"
+                placeholder="@username"
+              />
+            </div>
+
+            {/* Новое поле: Выбор социальной сети (опционально) */}
+            <div>
+              <label className="font-body text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                Предпочтительный способ связи <span className="text-xs opacity-60">(опционально)</span>
+              </label>
+              <select
+                value={form.preferredSocialNetwork}
+                onChange={(e) => setForm({ ...form, preferredSocialNetwork: e.target.value })}
+                className="w-full bg-transparent border-b border-border py-3 font-body text-foreground focus:outline-none focus:border-primary transition-colors duration-300 appearance-none cursor-pointer"
+              >
+                <option className="bg-black text-white" value="">-- Выберите --</option>
+                <option className="bg-black text-white" value="telegram">Telegram</option>
+                <option className="bg-black text-white" value="whatsapp">WhatsApp</option>
+                <option className="bg-black text-white" value="viber">Viber</option>
+              </select>
             </div>
 
             <div>
